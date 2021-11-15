@@ -15,6 +15,7 @@ const SearchBooks = () => {
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
+  // saveBook mutation
   const [saveBook, { error }] = useMutation(SAVE_BOOK)
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
@@ -34,10 +35,6 @@ const SearchBooks = () => {
     try {
       const response = await searchGoogleBooks(searchInput);
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
       const { items } = await response.json();
 
       const bookData = items.map((book) => ({
@@ -51,7 +48,7 @@ const SearchBooks = () => {
       setSearchedBooks(bookData);
       setSearchInput('');
     } catch (err) {
-      console.error(err);
+      console.error(error);
     }
   };
 
